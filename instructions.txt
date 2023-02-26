@@ -62,4 +62,6 @@ curl rolldice:5000/rolldice a few times
 
 13 (on laptop) look at the dashboard for traces
 
-
+14 change sampling rate
+Edit the istio deployment: microk8s kubectl -n istio-system edit deploy istiod
+and change value of PILOT_TRACE_SAMPLING
