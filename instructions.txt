@@ -61,6 +61,7 @@ microk8s kubectl run my-shell --rm -i --tty --image curlimages/curl -- sh
 curl rolldice:5000/rolldice a few times
 
 13 (on laptop) look at the dashboard for traces
+http://localhost:16686/
 
 14 change sampling rate
 Edit the istio deployment: microk8s kubectl -n istio-system edit deploy istiod
