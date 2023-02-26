@@ -1,0 +1,65 @@
+
+Class project experiments
+
+0.
+create cloud lab experiment with a node
+ssh to the node
+
+1
+Make home look like /home because that’s where snap wants it to be:
+
+sudo mkdir -p /home/$USER
+sudo mount --bind /users/phawley /home/$USER
+sudo apt update
+cd /etc
+sudo cp passwd passwd.bkp
+sudo vi passwd # and edit the home directory
+
+2
+Logout and login
+
+3 install snap and microk8s
+sudo apt install snapd
+PATH=$PATH:/snap/bin
+sudo snap install microk8s --classic
+sudo usermod -a -G microk8s phawley
+newgrp microk8s
+
+4 startup microk8s
+microk8s start
+microk8s status
+microk8s enable dns dashboard storage
+
+5 turn on istio
+microk8s enable community
+microk8s enable istio
+
+6 how do things look?
+microk8s kubectl get all --all-namespaces
+microk8s istioctl analyze
+microk8s istioctl verify-install 
+
+7 add docker to build sample app
+sudo snap install docker
+docker build -t phawley888/dice .
+docker push phawley888/dice
+
+8 deploy sample app
+microk8s kubectl apply -f rolldice.yaml
+
+9 add jaeger to the cluster
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/addons/jaeger.yaml
+
+10 run the jaeger dashboard
+microk8s istioctl dashboard jaeger
+
+11 (on laptop) tunnel dash to laptop
+ssh -L 16686:127.0.0.1:16686 phawley@clnode298.clemson.cloudlab.us
+
+12 try calling the sample app
+microk8s kubectl run my-shell --rm -i --tty --image curlimages/curl -- sh
+curl rolldice:5000/rolldice a few times
+
+13 (on laptop) look at the dashboard for traces
+
+
