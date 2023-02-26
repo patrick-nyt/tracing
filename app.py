@@ -21,7 +21,7 @@ resource = Resource(attributes={
 
 provider = TracerProvider(resource=resource)
 #processor = BatchSpanProcessor(ConsoleSpanExporter())
-processor = BatchSpanProcessor(OTLPSpanExporter(endpoint="/rolldice"))
+processor = BatchSpanProcessor(OTLPSpanExporter(endpoint='http://otel-collector:4317'))
 provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
