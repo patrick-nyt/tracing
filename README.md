@@ -1,1 +1,1 @@
-# tracing
+# Distributed Tracing class
