@@ -1,7 +1,7 @@
 from random import randint
 from flask import Flask, request
 from opentelemetry import trace
-from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (
     BatchSpanProcessor,
@@ -19,14 +19,9 @@ resource = Resource(attributes={
     SERVICE_NAME: "rolldice"
 })
 
-#jaeger_exporter = JaegerExporter(
-#    agent_host_name="localhost",
-#    agent_port=6831,
-#)
-
 provider = TracerProvider(resource=resource)
-processor = BatchSpanProcessor(ConsoleSpanExporter())
-#processor = BatchSpanProcessor(jaeger_exporter)
+#processor = BatchSpanProcessor(ConsoleSpanExporter())
+processor = BatchSpanProcessor(OTLPSpanExporter(endpoint="/rolldice"))
 provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
