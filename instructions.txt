@@ -44,8 +44,9 @@ sudo snap install docker
 docker build -t phawley888/dice .
 docker push phawley888/dice
 
-8 deploy sample app
+8 deploy sample app and otel collector
 microk8s kubectl apply -f rolldice.yaml
+kubectl apply -f https://raw.githubusercontent.com/open-telemetry/opentelemetry-collector/main/examples/k8s/otel-config.yaml
 
 9 add jaeger to the cluster
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/addons/jaeger.yaml
